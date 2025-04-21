@@ -236,8 +236,8 @@ void printRadioBeginResult(int &STATE)
  */
 void radioBegin()
 {
-  //pinMode(NSS_PIN, OUTPUT);
-  //digitalWrite(NSS_PIN, LOW);
+  pinMode(NSS_PIN, OUTPUT);
+  digitalWrite(NSS_PIN, LOW);
   
   //Инициализируем радиотрансивер 1 со значениями по-умолчанию, заданными в
   //структуре LORA_CONFIGURATION
@@ -261,11 +261,16 @@ void radioBegin()
   radio1.setRegulatorDCDC();
   //radio1.setRegulatorLDO();
   #endif
-  
-  radio.setTCXO(1.6);
+
+    
+  //radio.setTCXO(1.6);
+  //radio.setRegulatorDCDC();
+  //radio.setRegulatorLDO();
   
   int state = radio.begin();
   printRadioBeginResult(state);
+
+  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table_1);
 
   WaitOnBusy();
   
@@ -292,26 +297,26 @@ void radio_setSettings(LR1121 radio, LORA_CONFIGURATION config_radio)
   // Устанавливаем необходимую нам частоту работы трансивера
   if (radio.setFrequency(config_radio.frequency) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     #ifdef DEBUG_PRINT
-    Serial.println(F("Selected frequency is invalid for this module!"));
+      Serial.println(F("Selected frequency is invalid for this module!"));
     #endif
     while (true);
   }
   #ifdef DEBUG_PRINT
-  Serial.print(F("Set frequency = "));
-  Serial.println(config_radio.frequency);
+    Serial.print(F("Set frequency = "));
+    Serial.println(config_radio.frequency);
   #endif
 
 
   // установить полосу пропускания до 250 кГц
   if (radio.setBandwidth(config_radio.bandwidth) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
     #ifdef DEBUG_PRINT
-    Serial.println(F("Selected bandwidth is invalid for this module!"));
+      Serial.println(F("Selected bandwidth is invalid for this module!"));
     #endif
     while (true);
   }
   #ifdef DEBUG_PRINT
-  Serial.print(F("Set bandWidth = "));
-  Serial.println(config_radio.bandwidth);
+    Serial.print(F("Set bandWidth = "));
+    Serial.println(config_radio.bandwidth);
   #endif
 
   // коэффициент расширения 
@@ -329,58 +334,58 @@ void radio_setSettings(LR1121 radio, LORA_CONFIGURATION config_radio)
   // установить скорость кодирования
   if (radio.setCodingRate(config_radio.codingRate) == RADIOLIB_ERR_INVALID_CODING_RATE) {
     #ifdef DEBUG_PRINT
-    Serial.println(F("Selected coding rate is invalid for this module!"));
+      Serial.println(F("Selected coding rate is invalid for this module!"));
     #endif
     while (true);
   }
   #ifdef DEBUG_PRINT
-  Serial.print(F("Set codingRate = "));
-  Serial.println(config_radio.codingRate);
+    Serial.print(F("Set codingRate = "));
+    Serial.println(config_radio.codingRate);
   #endif
 
   // Устанавливаем слово синхронизации
   if (radio.setSyncWord(config_radio.syncWord) != RADIOLIB_ERR_NONE) {
     #ifdef DEBUG_PRINT
-    Serial.println(F("Unable to set sync word!"));
+      Serial.println(F("Unable to set sync word!"));
     #endif
     while (true);
   }
   #ifdef DEBUG_PRINT
-  Serial.print(F("Set syncWord = "));
-  Serial.println(config_radio.syncWord);
+    Serial.print(F("Set syncWord = "));
+    Serial.println(config_radio.syncWord);
   #endif
 
   // Устанавливаем выходную мощность трансивера
   if (radio.setOutputPower(config_radio.outputPower) == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
     #ifdef DEBUG_PRINT
-    Serial.println(F("Selected output power is invalid for this module!"));
+      Serial.println(F("Selected output power is invalid for this module!"));
     #endif
     while (true);
   }
   #ifdef DEBUG_PRINT
-  Serial.print(F("Set setOutputPower = "));
-  Serial.println(config_radio.outputPower); 
+    Serial.print(F("Set setOutputPower = "));
+    Serial.println(config_radio.outputPower); 
   #endif
 
   // установить длину преамбулы (допустимый диапазон 6 - 65535)
   if (radio.setPreambleLength(config_radio.preambleLength) == RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH) {
     #ifdef DEBUG_PRINT
-    Serial.println(F("Selected preamble length is invalid for this module!"));
+      Serial.println(F("Selected preamble length is invalid for this module!"));
     #endif
     while (true);
   }
   #ifdef DEBUG_PRINT
-  Serial.print(F("Set preambleLength = "));
-  Serial.println(config_radio.preambleLength);
+    Serial.print(F("Set preambleLength = "));
+    Serial.println(config_radio.preambleLength);
 
-  
+    
 
-  Serial.println(F("All settings successfully changed!"));
+    Serial.println(F("All settings successfully changed!"));
 
-  Serial.print(TABLE_LEFT);
-  Serial.print(F("END SETTINGTH OF RADIO "));
-  Serial.println(TABLE_RIGHT);
-  Serial.println(SPACE);
+    Serial.print(TABLE_LEFT);
+    Serial.print(F("END SETTINGTH OF RADIO "));
+    Serial.println(TABLE_RIGHT);
+    Serial.println(SPACE);
   #endif
 }
 

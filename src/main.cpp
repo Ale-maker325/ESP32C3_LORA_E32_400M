@@ -16,7 +16,7 @@ void setup() {
     #endif
 
     // SPI_MODEM.begin(SCK_RADIO, MISO_RADIO, MOSI_RADIO, NSS_PIN);
-    SPI_MODEM.begin(SCK_RADIO, MISO_RADIO, MOSI_RADIO);
+    SPI_MODEM.begin(SCK_RADIO, MISO_RADIO, MOSI_RADIO, NSS_PIN);
     display_wire.begin(I2C_SDA_PIN, I2C_SCL_PIN, 100000);
     pinMode(LED_PIN, OUTPUT);
 
